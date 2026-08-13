@@ -48,6 +48,24 @@ void main() {
       expect(config.code.tag, MarkdownTag.code.name);
       expect(config.img.tag, MarkdownTag.img.name);
       expect(config.input.tag, MarkdownTag.input.name);
+      expect(config.strong.tag, MarkdownTag.strong.name);
+    });
+
+    test('should apply custom StrongConfig', () {
+      final config = MarkdownConfig(configs: [
+        const StrongConfig(style: TextStyle(fontWeight: FontWeight.w600)),
+      ]);
+      expect(config.strong.style.fontWeight, FontWeight.w600);
+    });
+
+    test('should apply custom heading padding', () {
+      const padding = EdgeInsets.only(top: 16, bottom: 8);
+      final config = MarkdownConfig(configs: [
+        const H1Config(padding: padding),
+        const H5Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+      ]);
+      expect(config.h1.padding, padding);
+      expect(config.h5.padding, const EdgeInsets.only(top: 4, bottom: 2));
     });
   });
 

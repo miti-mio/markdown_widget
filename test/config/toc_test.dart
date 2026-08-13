@@ -199,4 +199,26 @@ void main() {
     expect(find.byType(TocWidget), findsOneWidget);
     expect(find.text('Custom: 0'), findsOneWidget);
   });
+
+  testWidgets('TocWidget should not apply document heading padding',
+      (tester) async {
+    final controller = TocController();
+    final headingNode = HeadingNode(H1Config(), WidgetVisitor());
+    headingNode.accept(TextNode(text: 'Heading 1'));
+    controller.setTocList([
+      TocItem(node: headingNode, widgetIndex: 0, tocListIndex: 0),
+    ]);
+
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+        body: TocWidget(controller: controller),
+      ),
+    ));
+
+    final headingPaddings = tester.widgetList<Padding>(find.byType(Padding)).where(
+          (padding) =>
+              padding.padding == const EdgeInsets.only(top: 8, bottom: 4),
+        );
+    expect(headingPaddings, isEmpty);
+  });
 }

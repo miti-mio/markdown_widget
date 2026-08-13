@@ -14,6 +14,9 @@
   - Fix static analysis issues
 - 2.3.2+8
   - Fix headingTag2Level error
+- 2.3.2+9
+  - Feat: `H1Config`–`H6Config` accept `padding` (also applied when there is no divider)
+  - Feat: `StrongConfig` to customize `**strong**` style
 
 ### [2.3.2]
 - Feat: auto check code language and show it

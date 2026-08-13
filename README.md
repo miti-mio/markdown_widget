@@ -105,6 +105,70 @@ You can customize the style and click events of links, like this
       ]));
 ```
 
+## 🎨Customize heading and strong
+
+`MarkdownConfig.configs` overrides defaults **by tag**. Order in the list does not matter; if the same tag appears twice, the later one wins.
+
+### Heading padding (h1–h6)
+
+`H1Config`–`H6Config` all accept `padding`. The default is `EdgeInsets.only(top: 8, bottom: 4)`. You can change spacing without rewriting `style`.
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    H1Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H2Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H3Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H4Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H5Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+    H6Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+  ]),
+)
+```
+
+h4–h6 have no divider by default, but padding still applies. Use `padding: EdgeInsets.zero` if you do not want extra spacing.
+
+Block spacing between widgets is separate: `MarkdownGenerator.linesMargin` defaults to 8 on top and bottom.
+
+### Strong `**xx**`
+
+Use `StrongConfig` to customize `**bold**` / `__bold__`. The default is still `FontWeight.bold`.
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    StrongConfig(
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF1F2328),
+      ),
+    ),
+  ]),
+)
+```
+
+### Combine overrides
+
+```dart
+final config = MarkdownConfig(configs: [
+  H1Config(
+    style: TextStyle(
+      fontSize: 28,
+      height: 36 / 28,
+      fontWeight: FontWeight.w600,
+    ),
+    padding: EdgeInsets.only(top: 16, bottom: 8),
+  ),
+  H2Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+  StrongConfig(style: TextStyle(fontWeight: FontWeight.w600)),
+  PConfig(textStyle: TextStyle(fontSize: 16)),
+]);
+
+MarkdownWidget(data: data, config: config);
+```
+
 ## 📜TOC (Table of Contents) feature
 
 Using the TOC is very simple

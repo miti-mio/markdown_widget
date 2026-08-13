@@ -137,7 +137,7 @@ class WidgetVisitor implements m.NodeVisitor {
     MarkdownTag.a.name: (e, config, visitor) =>
         LinkNode(e.attributes, config.a),
     MarkdownTag.del.name: (e, config, visitor) => DelNode(),
-    MarkdownTag.strong.name: (e, config, visitor) => StrongNode(),
+    MarkdownTag.strong.name: (e, config, visitor) => StrongNode(config.strong),
     MarkdownTag.em.name: (e, config, visitor) => EmNode(),
     MarkdownTag.br.name: (e, config, visitor) => BrNode(),
     MarkdownTag.code.name: (e, config, visitor) =>

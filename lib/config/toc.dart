@@ -439,5 +439,8 @@ class _TocHeadingConfig extends HeadingConfig {
   @override
   final String tag;
 
+  @override
+  EdgeInsets get padding => EdgeInsets.zero;
+
   _TocHeadingConfig(this.style, this.tag);
 }

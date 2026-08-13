@@ -104,6 +104,50 @@ class MarkdownPage extends StatelessWidget {
       ]));
 ```
 
+## 🎨見出しと太字のカスタマイズ
+
+`MarkdownConfig.configs` は **tag** 単位で上書きします。配列の順序は関係ありません。同じ tag が2回出た場合は後のものが勝ちます。
+
+### 見出しの padding（h1–h6）
+
+`H1Config`–`H6Config` はすべて `padding` を受け取れます。デフォルトは `EdgeInsets.only(top: 8, bottom: 4)` です。`style` を書き直さなくても余白だけ変えられます。
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    H1Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H2Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H3Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H4Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H5Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+    H6Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+  ]),
+)
+```
+
+h4–h6 はデフォルトで分割線がありませんが、padding は効きます。余白が不要なら `padding: EdgeInsets.zero` を指定してください。
+
+見出し同士のブロック間隔は別層です。`MarkdownGenerator.linesMargin` のデフォルトは上下 8 です。
+
+### 太字 `**xx**`
+
+`StrongConfig` で `**bold**` / `__bold__` のスタイルを上書きできます。デフォルトは `FontWeight.bold` のままです。
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    StrongConfig(
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF1F2328),
+      ),
+    ),
+  ]),
+)
+```
+
 ## 📜TOC（目次）機能
 
 TOCの使用は非常に簡単です。

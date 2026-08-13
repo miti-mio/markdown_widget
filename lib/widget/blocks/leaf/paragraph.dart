@@ -51,9 +51,25 @@ class DelNode extends ElementNode {
 ///
 /// double '*'s or '_'s will be wrapped with an HTML <strong> tag.
 class StrongNode extends ElementNode {
+  final StrongConfig strongConfig;
+
+  StrongNode([this.strongConfig = const StrongConfig()]);
+
   @override
   TextStyle get style =>
-      parentStyle?.merge(_defaultStrongStyle) ?? _defaultStrongStyle;
+      parentStyle?.merge(strongConfig.style) ?? strongConfig.style;
+}
+
+///config class for strong, tag: strong
+class StrongConfig implements InlineConfig {
+  final TextStyle style;
+
+  const StrongConfig(
+      {this.style = const TextStyle(fontWeight: FontWeight.bold)});
+
+  @nonVirtual
+  @override
+  String get tag => MarkdownTag.strong.name;
 }
 
 ///Tag: [MarkdownTag.em]
@@ -76,9 +92,6 @@ class BrNode extends SpanNode {
 
 ///see [DelNode]
 const _defaultDelStyle = TextStyle(decoration: TextDecoration.lineThrough);
-
-///see [StrongNode]
-const _defaultStrongStyle = TextStyle(fontWeight: FontWeight.bold);
 
 ///see [EmNode]
 const _defaultEmStyle = TextStyle(fontStyle: FontStyle.italic);

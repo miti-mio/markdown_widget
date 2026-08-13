@@ -18,21 +18,31 @@ class HeadingNode extends ElementNode {
   @override
   InlineSpan build() {
     final divider = headingConfig.divider;
-    if (divider == null) return childrenSpan;
+    final padding = headingConfig.padding;
+    if (divider == null && padding == EdgeInsets.zero) {
+      return childrenSpan;
+    }
+    final text = ProxyRichText(
+      childrenSpan,
+      richTextBuilder: _getRichTextBuilder() ?? visitor.richTextBuilder,
+    );
+    final Widget child;
+    if (divider == null) {
+      child = text;
+    } else {
+      child = Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          text,
+          _Divider(divider: divider.copy(color: parentStyle?.color)),
+        ],
+      );
+    }
     return WidgetSpan(
       child: Padding(
-        padding: headingConfig.padding,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ProxyRichText(
-              childrenSpan,
-              richTextBuilder: _getRichTextBuilder() ?? visitor.richTextBuilder,
-            ),
-            _Divider(divider: divider.copy(color: parentStyle?.color)),
-          ],
-        ),
+        padding: padding,
+        child: child,
       ),
     );
   }
@@ -117,7 +127,7 @@ abstract class HeadingConfig implements LeafConfig {
 
   HeadingDivider? get divider => null;
 
-  EdgeInsets get padding => EdgeInsets.only(top: 8, bottom: 4);
+  EdgeInsets get padding => const EdgeInsets.only(top: 8, bottom: 4);
 
   RichTextBuilder? get richTextBuilder => null;
 }
@@ -128,6 +138,8 @@ class H1Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H1Config({
     this.style = const TextStyle(
@@ -136,6 +148,7 @@ class H1Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override
@@ -159,6 +172,8 @@ class H2Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H2Config({
     this.style = const TextStyle(
@@ -167,6 +182,7 @@ class H2Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override
@@ -190,6 +206,8 @@ class H3Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H3Config({
     this.style = const TextStyle(
@@ -198,6 +216,7 @@ class H3Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override
@@ -221,6 +240,8 @@ class H4Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H4Config({
     this.style = const TextStyle(
@@ -229,6 +250,7 @@ class H4Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override
@@ -249,6 +271,8 @@ class H5Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H5Config({
     this.style = const TextStyle(
@@ -257,6 +281,7 @@ class H5Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override
@@ -277,6 +302,8 @@ class H6Config extends HeadingConfig {
   final TextStyle style;
   @override
   final RichTextBuilder? richTextBuilder;
+  @override
+  final EdgeInsets padding;
 
   const H6Config({
     this.style = const TextStyle(
@@ -285,6 +312,7 @@ class H6Config extends HeadingConfig {
       fontWeight: FontWeight.bold,
     ),
     this.richTextBuilder,
+    this.padding = const EdgeInsets.only(top: 8, bottom: 4),
   });
 
   @override

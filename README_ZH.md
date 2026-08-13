@@ -105,6 +105,70 @@ class MarkdownPage extends StatelessWidget {
       
 ```
 
+## 🎨自定义标题与加粗
+
+`MarkdownConfig.configs` 按 **tag** 覆盖默认样式，数组顺序无关；同一个 tag 出现两次时，后面的会覆盖前面的。
+
+### 标题 padding（h1–h6）
+
+`H1Config`–`H6Config` 都支持 `padding`。默认是 `EdgeInsets.only(top: 8, bottom: 4)`。只改间距时不必重写 `style`。
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    H1Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H2Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H3Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H4Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+    H5Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+    H6Config(padding: EdgeInsets.only(top: 4, bottom: 2)),
+  ]),
+)
+```
+
+h4–h6 默认没有分割线，但 padding 仍然生效。不想要额外间距时设 `padding: EdgeInsets.zero`。
+
+标题与标题之间还有 `MarkdownGenerator.linesMargin`（默认上下各 8），那是块间距，和这里的 padding 是两层。
+
+### 加粗 `**xx**`
+
+用 `StrongConfig` 覆盖 `**bold**` / `__bold__` 的样式，默认仍是 `FontWeight.bold`。
+
+```dart
+MarkdownWidget(
+  data: data,
+  config: MarkdownConfig(configs: [
+    StrongConfig(
+      style: TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF1F2328),
+      ),
+    ),
+  ]),
+)
+```
+
+### 一起覆盖
+
+```dart
+final config = MarkdownConfig(configs: [
+  H1Config(
+    style: TextStyle(
+      fontSize: 28,
+      height: 36 / 28,
+      fontWeight: FontWeight.w600,
+    ),
+    padding: EdgeInsets.only(top: 16, bottom: 8),
+  ),
+  H2Config(padding: EdgeInsets.only(top: 16, bottom: 8)),
+  StrongConfig(style: TextStyle(fontWeight: FontWeight.w600)),
+  PConfig(textStyle: TextStyle(fontSize: 16)),
+]);
+
+MarkdownWidget(data: data, config: config);
+```
+
 ## 📜TOC功能
 
 使用TOC非常的简单

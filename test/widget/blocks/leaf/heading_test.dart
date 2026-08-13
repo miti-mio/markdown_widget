@@ -47,6 +47,44 @@ void main() {
 
       expect(node.style, config.style);
     });
+
+    test('should apply custom padding when divider exists', () {
+      const padding = EdgeInsets.only(top: 16, bottom: 8);
+      final config = H1Config(padding: padding);
+      final visitor = WidgetVisitor();
+      final node = HeadingNode(config, visitor);
+      node.accept(TextNode(text: 'Heading'));
+
+      final span = node.build();
+      expect(span, isA<WidgetSpan>());
+      final widget = (span as WidgetSpan).child;
+      expect(widget, isA<Padding>());
+      expect((widget as Padding).padding, padding);
+    });
+
+    test('should apply custom padding when divider is null', () {
+      const padding = EdgeInsets.only(top: 20, bottom: 10);
+      final config = H4Config(padding: padding);
+      final visitor = WidgetVisitor();
+      final node = HeadingNode(config, visitor);
+      node.accept(TextNode(text: 'Heading 4'));
+
+      final span = node.build();
+      expect(span, isA<WidgetSpan>());
+      final widget = (span as WidgetSpan).child;
+      expect(widget, isA<Padding>());
+      expect((widget as Padding).padding, padding);
+    });
+
+    test('should return TextSpan when divider is null and padding is zero', () {
+      final config = _PlainHeadingConfig();
+      final visitor = WidgetVisitor();
+      final node = HeadingNode(config, visitor);
+      node.accept(TextNode(text: 'TOC heading'));
+
+      final span = node.build();
+      expect(span, isA<TextSpan>());
+    });
   });
 
   group('H1Config', () {
@@ -77,6 +115,17 @@ void main() {
 
       expect(config.richTextBuilder, isNotNull);
       expect(config.richTextBuilder, same(builder));
+    });
+
+    test('should have default padding', () {
+      final config = const H1Config();
+      expect(config.padding, const EdgeInsets.only(top: 8, bottom: 4));
+    });
+
+    test('should accept custom padding', () {
+      const padding = EdgeInsets.only(top: 16, bottom: 8);
+      final config = const H1Config(padding: padding);
+      expect(config.padding, padding);
     });
   });
 
@@ -142,6 +191,12 @@ void main() {
     test('should have no divider', () {
       final config = const H4Config();
       expect(config.divider, isNull);
+    });
+
+    test('should accept custom padding', () {
+      const padding = EdgeInsets.only(top: 4, bottom: 2);
+      final config = const H4Config(padding: padding);
+      expect(config.padding, padding);
     });
 
     test('should have dark config', () {
@@ -312,4 +367,15 @@ Content below.''';
       expect(copied.height, divider.height);
     });
   });
+}
+
+class _PlainHeadingConfig extends HeadingConfig {
+  @override
+  TextStyle get style => const TextStyle();
+
+  @override
+  String get tag => MarkdownTag.h1.name;
+
+  @override
+  EdgeInsets get padding => EdgeInsets.zero;
 }

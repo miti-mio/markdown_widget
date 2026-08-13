@@ -158,10 +158,41 @@ Third paragraph.''';
     });
   });
 
+  group('StrongConfig', () {
+    test('should have correct tag', () {
+      const config = StrongConfig();
+      expect(config.tag, MarkdownTag.strong.name);
+    });
+
+    test('should have default bold style', () {
+      const config = StrongConfig();
+      expect(config.style.fontWeight, FontWeight.bold);
+    });
+
+    test('should accept custom style', () {
+      const customStyle = TextStyle(
+        fontWeight: FontWeight.w600,
+        color: Colors.red,
+      );
+      const config = StrongConfig(style: customStyle);
+      expect(config.style.fontWeight, FontWeight.w600);
+      expect(config.style.color, Colors.red);
+    });
+  });
+
   group('StrongNode (bold)', () {
     test('should create with default style', () {
       final node = StrongNode();
       expect(node.style.fontWeight, FontWeight.bold);
+    });
+
+    test('should use custom StrongConfig style', () {
+      const config = StrongConfig(
+        style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
+      );
+      final node = StrongNode(config);
+      expect(node.style.fontWeight, FontWeight.w900);
+      expect(node.style.fontSize, 18);
     });
 
     testWidgets('should render bold text', (tester) async {
@@ -194,6 +225,39 @@ Third paragraph.''';
       ));
 
       expect(find.byType(Scaffold), findsOneWidget);
+    });
+
+    testWidgets('should apply custom strong style from MarkdownConfig',
+        (tester) async {
+      final config = MarkdownConfig(configs: [
+        const StrongConfig(
+          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.orange),
+        ),
+      ]);
+      final generator = MarkdownGenerator();
+      const markdown = 'This is **bold** text.';
+
+      final widgets = generator.buildWidgets(markdown, config: config);
+
+      await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+          body: Column(children: widgets),
+        ),
+      ));
+
+      final richTexts = tester.widgetList<RichText>(find.byType(RichText));
+      final hasCustomStrong = richTexts.any((richText) {
+        var found = false;
+        richText.text.visitChildren((span) {
+          if (span.style?.color == Colors.orange &&
+              span.style?.fontWeight == FontWeight.w600) {
+            found = true;
+          }
+          return true;
+        });
+        return found;
+      });
+      expect(hasCustomStrong, isTrue);
     });
   });
 
