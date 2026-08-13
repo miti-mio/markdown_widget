@@ -16,9 +16,13 @@ class HrNode extends SpanNode {
   @override
   InlineSpan build() {
     return WidgetSpan(
-        child: Container(
-      height: hrConfig.height,
-      color: hrConfig.color,
+        child: Padding(
+      padding: hrConfig.padding,
+      child: Divider(
+        height: hrConfig.height,
+        thickness: hrConfig.thickness,
+        color: hrConfig.color,
+      ),
     ));
   }
 }
@@ -26,9 +30,16 @@ class HrNode extends SpanNode {
 ///config class for [HrNode]
 class HrConfig implements LeafConfig {
   final double height;
+  final double thickness;
   final Color color;
+  final EdgeInsetsGeometry padding;
 
-  const HrConfig({this.height = 2, this.color = const Color(0xFFd0d7de)});
+  const HrConfig({
+    this.height = 2,
+    double? thickness,
+    this.color = const Color(0xFFd0d7de),
+    this.padding = EdgeInsets.zero,
+  }) : thickness = thickness ?? height;
 
   @nonVirtual
   @override

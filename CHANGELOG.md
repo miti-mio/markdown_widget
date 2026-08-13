@@ -17,6 +17,7 @@
 - 2.3.2+9
   - Feat: `H1Config`–`H6Config` accept `padding` (also applied when there is no divider)
   - Feat: `StrongConfig` to customize `**strong**` style
+  - Feat: `HrConfig.thickness` and `HrConfig.padding` for `---` horizontal rules
 
 ### [2.3.2]
 - Feat: auto check code language and show it
